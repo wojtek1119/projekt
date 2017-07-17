@@ -1,0 +1,120 @@
+﻿@model PagedList.IPagedList<zadanie.Models.Products>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/bootstrap.js")" type="text/javascript"> </script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"> </script>
+<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Product Name
+        </th>
+        <th>
+            Quantity Per Unit
+        </th>
+        <th>
+            Unit Price
+        </th>
+        <th>
+            Units In Stock
+        </th>
+        <th>
+            Units On Order
+        </th>
+        <th>
+            Reorder Level
+        </th>
+        <th>
+            Discontinued
+        </th>
+        <th>
+            Category Name
+        </th>
+        <th>
+            Company Name
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitsInStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitsOnOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReorderLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discontinued)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categories.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Suppliers.CompanyName)
+            </td>
+            <td>
+                <a href="#myModal" class="btn btn-default btnEdit" data-toggle="modal" data-id="@item.ProductID">Edit</a>
+                <a href="#myModal" class="btn btn-default btnDetails" data-toggle="modal" data-id="@item.ProductID">Details</a>
+                <a href="#myModal" class="btn btn-default btnDelete" data-toggle="modal" data-id="@item.ProductID">Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="modal-content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('.btnEdit').click(function (eve) {
+            $("#modal-content").load("/Products1/Edit/" + $(this).data("id"));
+        })
+        $('.btnDetails').click(function (eve) {
+            $("#modal-content").load("/Products1/Details/" + $(this).data("id"));
+        })
+        $('.btnDelete').click(function (eve) {
+            $("#modal-content").load("/Products1/Delete/" + $(this).data("id"));
+        })
+    </script>
+}
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, Page_No => Url.Action("Index",
+    new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue })) 
