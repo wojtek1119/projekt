@@ -73,3 +73,16 @@ C:\projekt\zadanie\zadanie\bin\Microsoft.AI.Web.xml
 C:\projekt\zadanie\zadanie\obj\Debug\zadanie.dll
 C:\projekt\zadanie\zadanie\obj\Debug\zadanie.pdb
 C:\projekt\zadanie\zadanie\obj\Debug\zadanie.csprojResolveAssemblyReference.cache
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.ServiceLocation.dll
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.Unity.Configuration.dll
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.Unity.dll
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.Unity.RegistrationByConvention.dll
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.ServiceLocation.pdb
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.ServiceLocation.xml
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.Unity.xml
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.Unity.Configuration.xml
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.Unity.RegistrationByConvention.xml
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.Unity.Mvc.dll
+C:\projekt\zadanie\zadanie\bin\WebActivatorEx.dll
+C:\projekt\zadanie\zadanie\bin\Microsoft.Practices.Unity.Mvc.xml
+C:\projekt\zadanie\zadanie\bin\System.Linq.Dynamic.dll

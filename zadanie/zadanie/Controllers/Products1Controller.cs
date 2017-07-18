@@ -8,19 +8,35 @@ using System.Web;
 using System.Web.Mvc;
 using zadanie.Models;
 using PagedList;
+using Microsoft.Practices.Unity;
+using System.Linq.Dynamic;
+
 
 namespace zadanie.Controllers
 {
     public class Products1Controller : Controller
     {
-        private NorthwindEntities1 db = new NorthwindEntities1();
+        private NorthwindEntities1 db;
+        
+        public Products1Controller(NorthwindEntities1 db)
+        {
+            this.db = db;
+        }
+        // private NorthwindEntities1 db = new NorthwindEntities1();
 
         // GET: Products1
-        public ActionResult Index(int? Page_No)
+        public ActionResult Index(string Sorting_Order, int? Page_No)
         {
+            ViewBag.SortingName = String.IsNullOrEmpty(Sorting_Order) ? "ProductName" : "";
             var products = from p in (db.Products.OrderBy(p => p.ProductName).Include(p => p.Categories).Include(p => p.Suppliers)) select p;
 
+            switch (Sorting_Order)
+            {
+                case "ProductName":
+                    products = products.OrderByDescending(stu => stu.ProductName);
+                    break;
 
+            }
 
             int Size_Of_Page = 20;
             int No_Of_Page = (Page_No ?? 1);
@@ -48,7 +64,7 @@ namespace zadanie.Controllers
         {
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName");
             ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "CompanyName");
-            return View();
+            return PartialView("Create");
         }
 
         // POST: Products1/Create

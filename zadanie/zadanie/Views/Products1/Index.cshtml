@@ -14,12 +14,12 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a href="#myModal" class="btn btn-default btnCreate" data-toggle="modal">Create</a>
 </p>
 <table class="table">
     <tr>
         <th>
-            Product Name
+            @Html.ActionLink("Product Name", "Index", new { Sorting_Order = ViewBag.SortingName })
         </th>
         <th>
             Quantity Per Unit
@@ -111,10 +111,13 @@
         $('.btnDelete').click(function (eve) {
             $("#modal-content").load("/Products1/Delete/" + $(this).data("id"));
         })
+        $('.btnCreate').click(function (eve) {
+            $("#modal-content").load("/Products1/Create/" + $(this).data("id"));
+        })
     </script>
 }
 
 <br />
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 @Html.PagedListPager(Model, Page_No => Url.Action("Index",
-    new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue })) 
+    new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder })) 

@@ -9,49 +9,19 @@ using System.Web;
 using System.Web.Mvc;
 using zadanie.Models;
 using PagedList;
+using System.Linq.Dynamic;
 
 namespace zadanie.Controllers
 {
     public class ProductsController : Controller
     {
         private NorthwindEntities1 db = new NorthwindEntities1();
-
+        
         // GET: Products
-        public async Task<ActionResult> Index(string Sorting_Order, string Search_Data, string Filter_Value, int? Page_No)
+        public async Task<ActionResult> Index()
         {
-            ViewBag.CurrentSortOrder = Sorting_Order;
-            ViewBag.SortingName = String.IsNullOrEmpty(Sorting_Order) ? "Name_Description" : "";
-            ViewBag.SortingDate = Sorting_Order == "Date_Enroll" ? "Date_Description" : "Date";
-
-            if (Search_Data != null)
-            {
-                Page_No = 1;
-            }
-            else
-            {
-                Search_Data = Filter_Value;
-            }
-
-            ViewBag.FilterValue = Search_Data;
-
             var products = from p in (db.Products.OrderBy(p => p.ProductName).Include(p => p.Categories).Include(p => p.Suppliers)) select p;
-
-            if (!String.IsNullOrEmpty(Search_Data))
-            {
-                products = products.Where(p => p.ProductName.ToUpper().Contains(Search_Data.ToUpper()));
-            }
-
-            switch (Sorting_Order)
-            {
-                case "Name_Description":
-                    products = products.OrderByDescending(p => p.ProductName);
-                    break;
-                case "UnitPrice":
-                    products = products.OrderBy(p => p.UnitPrice);
-                    break;
-            }
-            int Size_Of_Page = 20;
-            int No_Of_Page = (Page_No ?? 1);
+           
             return View(await products.ToListAsync());
         }
 
@@ -165,6 +135,28 @@ namespace zadanie.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        [HttpPost]
+        public ActionResult LoadData()
+        {
+
+            var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            var start = Request.Form.GetValues("start").FirstOrDefault();
+            var length = Request.Form.GetValues("length").FirstOrDefault();
+
+
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt32(start) : 0;
+            int recordsTotal = 0;
+            using (NorthwindEntities1 db = new NorthwindEntities1())
+            {
+                // dc.Configuration.LazyLoadingEnabled = false; // if your table is relational, contain foreign key
+                var products = from p in (db.Products.OrderBy(p => p.ProductName).Include(p => p.Categories).Include(p => p.Suppliers)) select p;
+
+                recordsTotal = products.Count();
+                var data = products.Skip(skip).Take(pageSize).ToList();
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }
