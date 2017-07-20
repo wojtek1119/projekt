@@ -3,11 +3,14 @@
 @{
     ViewBag.Title = "Edit";
 }
+@{
+    Layout = null;
+}
 
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm" }))
 {
     @Html.AntiForgeryToken()
     
